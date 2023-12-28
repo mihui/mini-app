@@ -1,7 +1,8 @@
 {
-  "name": "wxcloudrun-express",
+  "name": "studio",
   "version": "1.0.0",
-  "description": "微信云托管 express 框架模版",
+  "description": "Studio",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -9,10 +10,13 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.16.4",
-    "morgan": "^1.10.0",
-    "mysql2": "^2.3.2",
+    "axios": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "glob": "latest",
+    "mysql2": "latest",
+    "qs": "latest",
     "sequelize": "^6.8.0"
   },
   "engines": {
