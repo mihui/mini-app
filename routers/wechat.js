@@ -19,6 +19,23 @@ publicRouter.get('/', async (req, res, next) => {
 /**
  * API endpoint
  */
+publicRouter.get('/login', async (req, res, next) => {
+  const { code = '' } = req.query;
+  try {
+    const token = await wechatService.obtainAccessToken(code);
+    logger.debug('token------->', token);
+    const openId = await wechatService.obtainOpenId(code);
+    logger.debug('openId------->', openId);
+    res.send(httpNormal(openId));
+  }
+  catch(error) {
+    next(error);
+  }
+});
+
+/**
+ * API endpoint
+ */
 publicRouter.get('/telephone', async (req, res, next) => {
   const { code = '' } = req.query;
   try {
