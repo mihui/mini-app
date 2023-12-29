@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { httpCodes, httpError, httpMessages } from '../http-manager';
-import { VARS } from '../vars';
+import { httpCodes, httpError, httpMessages } from '../http-manager.js';
+import { VARS } from '../vars.js';
 
 import { WeChatPayloadPhone, WeChatPayloadOpenId, WeChatPayloadToken } from '../models/wechat.js';
 

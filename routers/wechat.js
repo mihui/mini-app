@@ -26,7 +26,7 @@ publicRouter.get('/login', async (req, res, next) => {
     logger.debug('token------->', token);
     const openId = await wechatService.obtainOpenId(code);
     logger.debug('openId------->', openId);
-    res.send(httpNormal(openId));
+    res.send(httpNormal({ user: openId }));
   }
   catch(error) {
     next(error);
@@ -45,7 +45,7 @@ publicRouter.get('/telephone', async (req, res, next) => {
     logger.debug('openId------->', openId);
     const telephone = await wechatService.obtainTelephone(token.access_token, code, openId.openid);
     logger.debug('telephone------->', telephone);
-    res.send(httpNormal({ telephone }));
+    res.send(httpNormal({ telephone, user: openId }));
   }
   catch(error) {
     next(error);
