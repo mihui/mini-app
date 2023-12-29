@@ -97,3 +97,6 @@ next-env.d.ts
 
 **/**secret.yaml
 .env*
+
+# WeChat
+.cloudbase/
