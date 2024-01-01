@@ -17,35 +17,50 @@ publicRouter.get('/', async (req, res, next) => {
 });
 
 /**
- * API endpoint
+ * WeChat login
  */
 publicRouter.get('/login', async (req, res, next) => {
-  const { code = '' } = req.query;
+  /** @type {{ code: string }} */
+  const { code = '', telephone = '' } = req.query;
   try {
-    const token = await wechatService.obtainAccessToken(code);
+    const token = await wechatService.obtainAccessToken();
     logger.debug('token------->', token);
     const openId = await wechatService.obtainOpenId(code);
     logger.debug('openId------->', openId);
-    res.send(httpNormal({ user: openId }));
+
+    let extra = {};
+    if(telephone) {
+      extra = await wechatService.obtainTelephone(token.access_token, telephone, openId.openid);
+      logger.debug('telephone------->', extra);
+    }
+
+    res.send(httpNormal({ user: openId, extra }));
   }
   catch(error) {
     next(error);
   }
 });
 
+
 /**
- * API endpoint
+ * Get WeChat user profile
  */
-publicRouter.get('/telephone', async (req, res, next) => {
+publicRouter.get('/user', async (req, res, next) => {
+  /** @type {{ code: string }} */
   const { code = '' } = req.query;
+  /** @type {{ sessionKey: string }} */
+  let { sessionKey = '' } = req.query;
   try {
-    const token = await wechatService.obtainAccessToken(code);
+    const token = await wechatService.obtainAccessToken();
     logger.debug('token------->', token);
-    const openId = await wechatService.obtainOpenId(code);
+    if(sessionKey === '') {
+      const openId = await wechatService.obtainOpenId(code);
+      sessionKey = openId.session_key;
+    }
     logger.debug('openId------->', openId);
-    const telephone = await wechatService.obtainTelephone(token.access_token, code, openId.openid);
-    logger.debug('telephone------->', telephone);
-    res.send(httpNormal({ telephone, user: openId }));
+    const user = await wechatService.fetchUser(openId, token.access_token, sessionKey);
+    logger.debug('user------->', user);
+    res.send(httpNormal({ user }));
   }
   catch(error) {
     next(error);

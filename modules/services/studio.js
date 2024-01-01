@@ -1,10 +1,11 @@
-import crypto from 'crypto';
 import axios from 'axios';
 import qs from 'qs';
 
 import { VARS } from '../vars.js';
 import { Logger } from '../logger.js';
 import { DeviceHeaderPayload, DeviceInfo, DeviceProperties, DeviceTokenPayload } from '../models/studio.js';
+import { utilityService } from './utility.js';
+
 const { logger } = Logger('studio');
 
 const API_TOKEN_URL = '/v1.0/token?grant_type=1';
@@ -19,15 +20,11 @@ class StudioService {
   }
 
   #encrypt(str) {
-    return crypto
-      .createHmac('sha256', VARS.IOT_CLIENT_SECRET)
-      .update(str, 'utf8')
-      .digest('hex')
-      .toUpperCase();
+    return utilityService.sign(str, VARS.IOT_CLIENT_SECRET).toUpperCase();
   }
 
   #hash(str) {
-    return crypto.createHash('sha256').update(str).digest('hex');
+    return utilityService.hash(str);
   }
 
   /**

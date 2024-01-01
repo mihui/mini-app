@@ -7,6 +7,7 @@ import { globSync } from 'glob';
 import { Logger } from './modules/logger.js';
 const { logger } = Logger('boot');
 import { httpErrorHandler, httpNotFoundHandler } from './modules/http-manager.js';
+import { utilityService } from "./modules/services/utility.js";
 
 const app = express();
 app.use(urlencoded({ extended: false }));
